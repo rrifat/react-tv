@@ -1,26 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import VideoPlayer from './video-player';
+import { Router, Redirect } from '@reach/router';
+import SignIn from './components/sign-in';
 
+import './App.css';
+import 'video.js/dist/video-js.min.css';
+
+const fakeAuth = {
+  isAuthenticated: false
+};
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <SignIn path="/" />
+        <PrivateRoute path="player" component={VideoPlayer} />
+      </Router>
     </div>
   );
 }
-
+function PrivateRoute({ component: Component, ...rest }) {
+  return fakeAuth.isAuthenticated ? <Component /> : <Redirect to="/" noThrow />;
+}
 export default App;
