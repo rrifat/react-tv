@@ -1,7 +1,9 @@
-function client(endpoint, { body, ...customConfig }) {
+import axios from 'axios';
+
+function client(endpoint, { body, ...customConfig } = {}) {
   const token = window.localStorage.getItem('__hidayah__iptv__');
   const headers = {
-    'content-type': 'application/json'
+    'Content-Type': 'application/json'
   };
   if (token) {
     headers.Authorization = `Bearer ${token}`;
@@ -16,10 +18,9 @@ function client(endpoint, { body, ...customConfig }) {
     }
   };
   if (body) {
-    config.body = JSON.stringify(body);
+    config.data = JSON.stringify(body);
   }
-  console.log(`${process.env.REACT_APP_API_URL}/${endpoint}`, config);
 
-  return window.fetch(`${process.env.REACT_APP_API_URL}/${endpoint}`, config);
+  return axios(`${process.env.REACT_APP_API_URL}/${endpoint}`, config);
 }
 export default client;

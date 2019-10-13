@@ -1,14 +1,12 @@
 /**@jsx jsx */
 import { jsx, css } from '@emotion/core';
 import styled from '@emotion/styled';
-import client from '../utils/api-client';
+import useCallbackStatus from '../utils/use-callback-status';
+import { useAuth } from '../context/auth-context';
 
 const Div = styled.div`
-  display: flex;
-  /* -ms-flex-align: center; */
-  align-items: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  margin-top: 30px;
+  padding: 25px 40px;
   background-color: #f5f5f5;
 `;
 const Form = styled.form`
@@ -29,14 +27,13 @@ const formControlSignIn = css`
 `;
 
 function SignIn() {
+  const { run, isPending, error } = useCallbackStatus();
+  const { login } = useAuth();
+
   function handleSubmit(e) {
     e.preventDefault();
     const { inputText, inputPassword } = e.target.elements;
-    client('login', {
-      body: { username: inputText.value, password: inputPassword.value }
-    })
-      .then(res => res.json())
-      .then(data => console.log(data));
+    run(login({ username: inputText.value, password: inputPassword.value }));
   }
   return (
     <Div>
@@ -51,7 +48,7 @@ function SignIn() {
         <h1 className="h3 mb-3 font-weight-normal text-center">
           Please sign in
         </h1>
-        <label htmlFor="inputEmail" className="sr-only">
+        <label htmlFor="inputUsername" className="sr-only">
           Username
         </label>
         <input
@@ -74,22 +71,20 @@ function SignIn() {
           required
           css={formControlSignIn}
         />
-        {/* <div className="checkbox mb-3">
-    <label>
-      <input type="checkbox" value="remember-me"> Remember me
-    </label>
-  </div> */}
+        {error && <p css={{ color: 'red' }}>{error.message}</p>}
         <button
           className="btn btn-lg btn-primary btn-block"
           type="submit"
           css={{ borderRadius: 0 }}
         >
-          Sign in
+          {isPending ? 'Loading' : 'Sign in'}
         </button>
-        {/* <p className="mt-5 mb-3 text-muted text-center">&copy; 2019</p> */}
       </Form>
     </Div>
   );
 }
 
-export default SignIn;
+function UnauthenticatedApp() {
+  return <SignIn />;
+}
+export default UnauthenticatedApp;

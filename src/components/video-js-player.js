@@ -10,12 +10,6 @@ function VideoJsPlayer(props) {
     const player = videojs(videoNode, props, function onPlayerReady() {
       console.log('onPlayerReady', this);
     });
-    console.log(
-      player.videoWidth(),
-      player.width(),
-      player.height(),
-      player.videoHeight()
-    );
 
     player.getChild('ControlBar').addChild('vjsButton', {}, -1);
     return () => {
