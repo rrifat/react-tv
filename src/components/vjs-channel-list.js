@@ -81,6 +81,8 @@ function ChannelList({ player }) {
 
 class vjsChannelList extends vjsComponent {
   constructor(player, options) {
+    console.log('comes');
+
     super(player, options);
     this.newPlayer = player;
     player.ready(() => this.mount());

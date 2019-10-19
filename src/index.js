@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { AuthProvider } from './context/auth-context';
+import AppProviders from './context';
 
 ReactDOM.render(
-  <AuthProvider>
+  <AppProviders>
     <App />
-  </AuthProvider>,
+  </AppProviders>,
   document.getElementById('root')
 );

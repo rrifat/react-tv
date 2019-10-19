@@ -1,8 +1,8 @@
 /** @jsx jsx */
 import { jsx, keyframes } from '@emotion/core';
 import React from 'react';
-import { useAuth } from './context/auth-context';
 import { FaSpinner } from 'react-icons/fa';
+import { useUser } from './context/user-context';
 
 import './App.css';
 import 'video.js/dist/video-js.min.css';
@@ -13,6 +13,25 @@ const UnauthenticatedApp = React.lazy(() =>
   import('./components/unauthenticated-app')
 );
 
+function App() {
+  const user = useUser();
+
+  React.useEffect(() => {
+    loadAuthenticatedApp();
+  }, []);
+
+  return (
+    <React.Suspense fallback={<FullPageSpinner />}>
+      {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+    </React.Suspense>
+  );
+}
+
+export default App;
+
+/*=========================
+  components/lib.js 
+==========================*/
 const spin = keyframes({
   '0%': { transform: 'rotate(0deg)' },
   '100%': { transform: 'rotate(360deg)' }
@@ -20,7 +39,14 @@ const spin = keyframes({
 
 export function FullPageSpinner() {
   return (
-    <div css={{ marginTop: '3em', fontSize: '4em' }}>
+    <div
+      css={{
+        marginTop: '3em',
+        fontSize: '4em',
+        display: 'flex',
+        justifyContent: 'center'
+      }}
+    >
       <FaSpinner
         css={{ animation: `${spin} 1s linear infinite` }}
         aria-label="loading"
@@ -28,33 +54,3 @@ export function FullPageSpinner() {
     </div>
   );
 }
-
-function App() {
-  const {
-    data: { user }
-  } = useAuth();
-
-  React.useEffect(() => {
-    loadAuthenticatedApp();
-  }, []);
-
-  return (
-    <div className="App">
-      <React.Suspense fallback={<FullPageSpinner />}>
-        {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
-      </React.Suspense>
-      {/* <Router>
-        <SignIn path="/" />
-        <PrivateRoute
-          path="player"
-          component={VideoPlayer}
-          token={refreshToken}
-        />
-      </Router> */}
-    </div>
-  );
-}
-// function PrivateRoute({ component: Component, token, ...rest }) {
-//   return token ? <Component /> : <Redirect to="/" noThrow />;
-// }
-export default App;

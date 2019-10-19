@@ -20,7 +20,9 @@ function useCallbackStatus() {
   const isPending = status === 'pending';
   const isRejected = status === 'rejected';
 
-  const run = promise => {
+  function run(promise) {
+    console.log(promise);
+
     if (!promise || !promise.then) {
       throw new Error(
         `Argument passed to useCallbackStatus().run must be a promise.`
@@ -28,32 +30,17 @@ function useCallbackStatus() {
     }
     safeSetSatus({ status: 'pending' });
 
-    function handleError(error) {
-      if (error.response) {
-        setState({ error: error.response.data });
-      } else if (error.request) {
-        console.log('Request error', error.request);
-        setState({ error });
-      } else {
-        setState({ error });
-      }
-      setState({ status: 'rejected' });
-
-      return Promise.reject(error);
-    }
-
     return promise.then(
       value => {
-        console.log(value);
-
+        console.log('use-call-back', value);
         setState({ status: 'rest' });
         return value;
       },
       error => {
-        return handleError(error);
+        return handleError(error, setState);
       }
     );
-  };
+  }
   return {
     run,
     isPending,
@@ -62,3 +49,17 @@ function useCallbackStatus() {
   };
 }
 export default useCallbackStatus;
+
+function handleError(error, setState) {
+  if (error.response) {
+    setState({ error: error.response.data });
+  } else if (error.request) {
+    console.log('Request error', error.request);
+    setState({ error });
+  } else {
+    setState({ error });
+  }
+  setState({ status: 'rejected' });
+
+  return Promise.reject(error);
+}

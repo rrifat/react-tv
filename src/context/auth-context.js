@@ -1,49 +1,57 @@
 import React from 'react';
-import client from '../utils/api-client';
 import { useAsync } from 'react-async';
+import { FullPageSpinner } from '../App';
+import * as authClient from '../utils/auth-client';
 
 const AuthContext = React.createContext();
 
-function getUser() {
-  const token = window.localStorage.getItem('__hidayah__iptv__refresh');
-  if (!token) {
-    return Promise.resolve({ user: false });
+async function bootstrapData() {
+  const data = await authClient.getUser();
+
+  if (!data) {
+    return { user: false };
   }
-  return Promise.resolve({ user: true }).catch(error => Promise.reject(error));
+  const { user } = data;
+  return {
+    user
+  };
 }
-// async function bootstrapData() {
-//   const data = await getUser();
-//   if (!data) {
-//     return { user: false };
-//   }
-//   const { user } = data;
-//   return {
-//     user
-//   };
-// }
 
 function AuthProvider(props) {
-  const { data = { user: false }, reload } = useAsync({
-    promiseFn: getUser
+  const [firstAttemptFinished, setFirstAttemptFinished] = React.useState(false);
+  const { data, error, isRejected, isPending, isSettled, reload } = useAsync({
+    promiseFn: bootstrapData
   });
 
-  const login = ({ username, password }) =>
-    client('login', { body: { username, password } })
-      .then(({ data: { data } }) => {
-        const { refresh_token } = data;
-        console.log(refresh_token);
+  React.useLayoutEffect(() => {
+    if (isSettled) {
+      setFirstAttemptFinished(true);
+    }
+  }, [isSettled]);
 
-        window.localStorage.setItem('__hidayah__iptv__refresh', refresh_token);
+  if (!firstAttemptFinished) {
+    if (isPending) {
+      return <FullPageSpinner />;
+    }
+    if (isRejected) {
+      return (
+        <div css={{ color: 'red' }}>
+          <p>Uh oh... There's a problem. Try refreshing the app.</p>
+          <pre>{error.message}</pre>
+        </div>
+      );
+    }
+  }
 
-        return data;
-      })
-      .then(reload);
+  const login = form => authClient.login(form).then(reload);
+  const logout = () => authClient.logout().then(reload);
 
   return (
     <AuthContext.Provider
       value={{
         login,
-        data
+        data,
+        logout
       }}
       {...props}
     />
@@ -55,8 +63,6 @@ function useAuth() {
   if (context === undefined) {
     throw new Error(`useAuth must be within AuthProvider`);
   }
-  console.log(context);
-
   return context;
 }
 
