@@ -1,88 +1,67 @@
+/**@jsx jsx */
+import { jsx } from '@emotion/core';
 import React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 import videojs from 'video.js';
+import * as channelClient from '../utils/channel-client';
+import { Link } from '@reach/router';
 
 const vjsComponent = videojs.getComponent('Component');
 
 function ChannelList({ player }) {
-  function handleClick(event) {
-    event.preventDefault();
-    player.src(event.target.parentNode.href);
-    player.removeChild('vjsChannelList');
-  }
+  const [channels, setChannels] = React.useState([]);
+  React.useEffect(() => {
+    channelClient.getChannels().then(({ data }) => {
+      const {
+        data: { channels }
+      } = data;
+      setChannels(channels);
+    });
+  }, []);
 
   return (
     <div
-      style={{
-        width: '200px',
-        height: '37.4vh',
+      className="d-flex align-items-center"
+      css={{
+        width: '100%',
+        height: '23vh',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         position: 'absolute',
-        bottom: '40px',
-        right: '10px',
-        overflowY: 'scroll',
-        display: 'flex',
-        flexDirection: 'column'
-        // alignItems: 'center'
+        bottom: '50px',
+        right: '0px',
+        left: '0px',
+        overflowX: 'scroll',
+        '&::-webkit-scrollbar-track': {
+          WebkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.3)',
+          borderRadius: '10px',
+          backgroundColor: '#F5F5F5'
+        },
+        '&::-webkit-scrollbar': {
+          backgroundColor: '#555'
+        },
+        '&::-webkit-scrollbar-thumb': {
+          borderRadius: '8px',
+          WebkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,.3)',
+          backgroundColor: '#b7090b'
+        }
       }}
     >
-      <div>
-        <a
-          onClick={handleClick}
-          href="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
-          style={{
-            fontSize: '1.7em',
-            textDecoration: 'none',
-            color: '#fff'
-          }}
-        >
-          <img
-            src={process.env.PUBLIC_URL + '/images/atn_news.png'}
-            alt="ATN News"
+      {channels.map(channel => (
+        <Link to={`/channel/${channel.slug}`} key={channel.uid}>
+          <div
             style={{
-              width: '150px',
-              height: '90px',
-              position: 'relative',
-              left: '16px',
-              top: '2px'
+              border: '1px solid rgba(0, 0, 0, 0.5)'
             }}
-          />
-          {/* <span>Channel A</span> */}
-        </a>
-      </div>
-      <hr></hr>
-      <div>
-        <a
-          onClick={handleClick}
-          href="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
-          style={{
-            fontSize: '1.7em',
-            textDecoration: 'none',
-            color: '#fff'
-          }}
-        >
-          <img
-            src={process.env.PUBLIC_URL + '/images/colors_bangla.png'}
-            alt="ATN News"
-            style={{
-              width: '150px',
-              height: '90px',
-              position: 'relative',
-              left: '16px',
-              top: '2px'
-            }}
-          />
-          {/* <span>Channel A</span> */}
-        </a>
-      </div>
+          >
+            <img src={channel.logo} alt={channel.name} />
+          </div>
+        </Link>
+      ))}
     </div>
   );
 }
-
 class vjsChannelList extends vjsComponent {
   constructor(player, options) {
-    console.log('comes');
-
     super(player, options);
     this.newPlayer = player;
     player.ready(() => this.mount());

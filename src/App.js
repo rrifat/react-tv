@@ -3,9 +3,9 @@ import { jsx, keyframes } from '@emotion/core';
 import React from 'react';
 import { FaSpinner } from 'react-icons/fa';
 import { useUser } from './context/user-context';
-
 import './App.css';
 import 'video.js/dist/video-js.min.css';
+import './hidayahflix-v1.0.0.css';
 
 const loadAuthenticatedApp = () => import('./components/authenticated-app');
 const AuthenticatedApp = React.lazy(loadAuthenticatedApp);
@@ -15,7 +15,6 @@ const UnauthenticatedApp = React.lazy(() =>
 
 function App() {
   const user = useUser();
-
   React.useEffect(() => {
     loadAuthenticatedApp();
   }, []);

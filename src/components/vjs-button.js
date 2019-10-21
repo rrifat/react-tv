@@ -19,11 +19,10 @@ function ChannelListButton({ player }) {
     <button
       className="vjs-icon-chapters"
       onClick={handleClick}
-      style={{ marginTop: '.3em', fontSize: '1.7em', cursor: 'pointer' }}
+      style={{ marginTop: '.3em', fontSize: '1.8em', cursor: 'pointer' }}
     ></button>
   );
 }
-
 class vjsButton extends vjsComponent {
   constructor(player, options) {
     super(player, options);

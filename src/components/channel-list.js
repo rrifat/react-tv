@@ -1,17 +1,22 @@
 import React from 'react';
-
-function ChannelList({ channels, handleClickChannel }) {
+import { Link } from '@reach/router';
+function ChannelList({ channels }) {
   return channels.map(channel => (
-    <div
-      className="card"
-      key={channel.uid}
-      style={{ width: '18rem', cursor: 'pointer' }}
-      onClick={() => handleClickChannel(channel.slug)}
-    >
-      <div style={{ height: '100%' }}>
+    <Link to={`/channel/${channel.slug}`} key={channel.uid}>
+      <div
+        className="card"
+        style={{
+          width: '18rem',
+          cursor: 'pointer',
+          border: '1px solid rgba(0, 0, 0, 0.5)'
+        }}
+      >
         <img src={channel.logo} className="img-responsive" alt="..." />
+        <div className="card-body">
+          <h5 className="card-title">{channel.name}</h5>
+        </div>
       </div>
-    </div>
+    </Link>
   ));
 }
 export default ChannelList;

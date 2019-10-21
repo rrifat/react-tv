@@ -3,7 +3,7 @@ import client from '../utils/api-client';
 function handleReponse({ data }) {
   const { data: auth } = data;
   window.localStorage.setItem('__hidayah__iptv__', auth.access_token);
-  window.localStorage.setItem('__hidayah__iptv__refresh', auth.refresh_token);
+  window.localStorage.setItem('__hidayah__iptv__refresh__', auth.refresh_token);
 
   return data;
 }
@@ -25,11 +25,11 @@ function login({ username, password }) {
   );
 }
 function logout() {
-  window.localStorage.removeItem('__hidayah__iptv__refresh');
+  window.localStorage.removeItem('__hidayah__iptv__refresh__');
   return Promise.resolve();
 }
 function getToken() {
-  return window.localStorage.getItem('__hidayah__iptv__refresh');
+  return window.localStorage.getItem('__hidayah__iptv__refresh__');
 }
 
 export { getUser, login, logout };

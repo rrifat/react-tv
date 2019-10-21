@@ -1,12 +1,14 @@
 import React from 'react';
 import VideoPlayer from '../video-player';
-import { Router, Redirect } from '@reach/router';
+import { Router, Redirect, Link } from '@reach/router';
 import { useAuth } from '../context/auth-context';
 import { IoMdLogOut } from 'react-icons/io';
+import List from './list';
 
 function RedirectToHome() {
-  return <Redirect to="/player" noThrow />;
+  return <Redirect to="channel-list" noThrow />;
 }
+
 function AuthenticatedApp() {
   return (
     <>
@@ -14,7 +16,8 @@ function AuthenticatedApp() {
       <main role="main">
         <Router>
           <RedirectToHome path="/" />
-          <VideoPlayer path="/player" />
+          <List path="channel-list" />
+          <VideoPlayer path="channel/:slug" />
         </Router>
       </main>
     </>
@@ -26,11 +29,13 @@ function Header() {
     <header>
       <div className="navbar navbar-dark bg-dark box-shadow">
         <div className="container d-flex justify-content-between">
-          <img
-            src={`${process.env.PUBLIC_URL}/images/Jadoo-Broadband-Logo.png`}
-            width="150"
-            alt="Jadoo"
-          />
+          <Link to="/">
+            <img
+              src={`${process.env.PUBLIC_URL}/images/Jadoo-Broadband-Logo.png`}
+              width="150"
+              alt="Jadoo"
+            />
+          </Link>
 
           <button
             className="btn btn-outline-secondary btn-lg"

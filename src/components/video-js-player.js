@@ -9,7 +9,6 @@ const videoJsOptions = {
   autoplay: true,
   preload: 'auto',
   controls: true,
-  muted: true,
   controlBar: {
     pictureInPictureToggle: false
   },
@@ -23,16 +22,16 @@ const videoJsOptions = {
 };
 
 function VideoJsPlayer({ source }) {
-  const currentRef = React.useRef();
   const videoRef = React.useRef();
   const [requireRedraw, setRequireRedraw] = React.useState(false);
-
-  React.useEffect(() => {
-    currentRef.current = true;
-    return () => {
-      currentRef.current = false;
-    };
-  }, []);
+  
+  // const currentRef = React.useRef();
+  // React.useEffect(() => {
+  //   currentRef.current = true;
+  //   return () => {
+  //     currentRef.current = false;
+  //   };
+  // }, []);
 
   React.useEffect(() => {
     const vjsOptions = {
@@ -42,17 +41,18 @@ function VideoJsPlayer({ source }) {
     let player;
     if (!requireRedraw) {
       player = videojs(videoRef.current, vjsOptions);
-      // player.getChild('ControlBar').addChild('vjsButton', {});
+      player.getChild('ControlBar').addChild('vjsButton', {});
     }
     return () => {
       if (!player) {
         return;
       }
-      if (currentRef.current) {
-        setRequireRedraw(true);
-      }
+      // if (!currentRef.current) {
+      //   player.dispose();
+      // }
+      setRequireRedraw(true);
     };
-  }, [videoRef, requireRedraw, source]);
+  }, [requireRedraw, source]);
 
   React.useEffect(() => {
     if (requireRedraw) {
@@ -61,20 +61,14 @@ function VideoJsPlayer({ source }) {
   }, [requireRedraw]);
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-md-12 mt-2">
-          {!requireRedraw && (
-            <div data-vjs-player>
-              <video
-                ref={videoRef}
-                className="video-js vjs-big-play-centered"
-              ></video>
-            </div>
-          )}
-        </div>
+    !requireRedraw && (
+      <div data-vjs-player>
+        <video
+          ref={videoRef}
+          className="video-js vjs-big-play-centered"
+        ></video>
       </div>
-    </div>
+    )
   );
 }
 
