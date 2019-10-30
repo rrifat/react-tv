@@ -24,7 +24,7 @@ const videoJsOptions = {
 function VideoJsPlayer({ source }) {
   const videoRef = React.useRef();
   const [requireRedraw, setRequireRedraw] = React.useState(false);
-  
+
   // const currentRef = React.useRef();
   // React.useEffect(() => {
   //   currentRef.current = true;
@@ -62,10 +62,11 @@ function VideoJsPlayer({ source }) {
 
   return (
     !requireRedraw && (
-      <div data-vjs-player>
+      <div data-vjs-player style={{ paddingTop: '45.9%' }}>
         <video
           ref={videoRef}
           className="video-js vjs-big-play-centered"
+          style={{}}
         ></video>
       </div>
     )
