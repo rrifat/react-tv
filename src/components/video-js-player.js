@@ -66,7 +66,6 @@ function VideoJsPlayer({ source }) {
         <video
           ref={videoRef}
           className="video-js vjs-big-play-centered"
-          style={{}}
         ></video>
       </div>
     )
