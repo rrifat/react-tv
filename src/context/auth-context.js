@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAsync } from 'react-async';
-import { FullPageSpinner } from '../App';
+import { FullPageSpinner } from '../components/lib';
 import * as authClient from '../utils/auth-client';
 
 const AuthContext = React.createContext();

@@ -2,6 +2,7 @@ import React from 'react';
 import ChannelList from './channel-list';
 import Pagination from './pagination';
 import * as channelClient from '../utils/channel-client';
+import { FullPageSpinner } from './lib';
 
 function usePaginate(items, currentPage) {
   const itemsPerPage = 18;
@@ -21,6 +22,7 @@ function List() {
   const [channels, setChannels] = React.useState([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [currentPageChannels, pages] = usePaginate(channels, currentPage);
+  const [listLoading, setListLoading] = React.useState(true);
 
   React.useEffect(() => {
     channelClient.getChannels().then(({ data }) => {
@@ -28,13 +30,18 @@ function List() {
         data: { channels }
       } = data;
       setChannels(channels);
+      setListLoading(false);
     });
   }, []);
 
   return (
     <div className="container-fluid mt-3">
       <div className="row d-flex justify-content-center">
-        <ChannelList channels={currentPageChannels} />
+        {listLoading ? (
+          <FullPageSpinner />
+        ) : (
+          <ChannelList channels={currentPageChannels} />
+        )}
       </div>
       <div className="row d-flex justify-content-center mt-3">
         <Pagination

@@ -21,8 +21,6 @@ function useCallbackStatus() {
   const isRejected = status === 'rejected';
 
   function run(promise) {
-    console.log(promise);
-
     if (!promise || !promise.then) {
       throw new Error(
         `Argument passed to useCallbackStatus().run must be a promise.`
@@ -32,7 +30,6 @@ function useCallbackStatus() {
 
     return promise.then(
       value => {
-        console.log('use-call-back', value);
         setState({ status: 'rest' });
         return value;
       },
