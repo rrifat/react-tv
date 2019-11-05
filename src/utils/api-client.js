@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-function client(endpoint, { body, ...customConfig } = {}) {
+function client(endpoint, { body = null, ...customConfig } = {}) {
   const token = window.localStorage.getItem('__hidayah__iptv__');
   const headers = {
     'Content-Type': 'application/json'

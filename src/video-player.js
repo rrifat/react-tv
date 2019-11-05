@@ -1,34 +1,31 @@
 import React from 'react';
 import VideoJsPlayer from './components/video-js-player';
+import * as channelClient from './utils/channel-client';
 
-const videoJsOptions = {
-  autoplay: true,
-  preload: 'auto',
-  controls: true,
-  controlBar: {
-    pictureInPictureToggle: false
-  },
-  sources: [
-    {
-      // src: '//vjs.zencdn.net/v/oceans.mp4',
-      src:
-        'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-      type: 'video/mp4'
-    }
-  ],
-  responsive: true,
-  // fluid: true,
-  liveui: true,
-  vjsInfoOverlay: {
-    ispname: 'digi digital digi dalkjalkdfkladflk',
-    username: 'abc3809'
-  },
-  width: '750px',
-  height: '421.88px'
-};
+// const defaultSource = {
+//   src: 'https://edge01.iptv.digijadoo.net/live/atn_news/playlist.m3u8',
+//   type: 'application/x-mpegURL'
+// };
 
-function VideoPlayer(props) {
-  return <VideoJsPlayer {...videoJsOptions} />;
+function VideoPlayer({ slug }) {
+  const [source, setSource] = React.useState();
+
+  React.useEffect(() => {
+    channelClient.getChannelUrl(slug).then(({ data } = {}) => {
+      setSource({
+        type: 'application/x-mpegURL',
+        src: data && data.url
+      });
+    });
+  }, [slug]);
+
+  return (
+    <div className="container-fluid">
+      <div className="row">
+        <VideoJsPlayer source={source} />
+      </div>
+    </div>
+  );
 }
 
 export default VideoPlayer;
