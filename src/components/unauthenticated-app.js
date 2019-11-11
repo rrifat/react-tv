@@ -79,7 +79,22 @@ function SignIn() {
               type="submit"
               css={{ borderRadius: 0 }}
             >
-              {isPending ? 'Loading' : 'Sign in'}
+              {isPending ? (
+                <div
+                  class="spinner-border"
+                  role="status"
+                  style={{
+                    width: '1.3rem',
+                    height: '1.3rem',
+                    border: '.2em solid currentColor',
+                    borderRightColor: 'transparent'
+                  }}
+                >
+                  <span class="sr-only">Loading...</span>
+                </div>
+              ) : (
+                'Sign in'
+              )}
             </button>
           </Form>
         </Div>
