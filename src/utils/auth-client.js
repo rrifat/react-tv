@@ -1,6 +1,6 @@
 import client from '../utils/api-client';
 
-function handleReponse({ data }) {
+function handleResponse({ data }) {
   const { data: auth } = data;
   window.localStorage.setItem('__hidayah__iptv__', auth.access_token);
   window.localStorage.setItem('__hidayah__iptv__refresh__', auth.refresh_token);
@@ -20,8 +20,8 @@ function getUser() {
   });
 }
 function login({ username, password }) {
-  return client('auth/login', { body: { username, password } }).then(
-    handleReponse
+  return client('auth/login', { body: { username, password, domain:'74285c1cb4214d93a951bfaefcfa091b' } }).then(
+    handleResponse
   );
 }
 function logout() {
