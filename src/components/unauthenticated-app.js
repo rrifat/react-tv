@@ -42,8 +42,8 @@ function SignIn() {
           <Form css={formControlSignIn} onSubmit={handleSubmit}>
             <img
               className="mb-4"
-              src={process.env.PUBLIC_URL + '/images/KS-320x180-png.png'}
-              alt=""
+              src={process.env.PUBLIC_URL + '/images/Jadoo-Broadband-Logo.png'}
+              alt="Jadoo Broadband"
               width="350"
               height="200"
             />

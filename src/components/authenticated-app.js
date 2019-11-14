@@ -31,10 +31,10 @@ function Header() {
         <div className="container d-flex justify-content-between">
           <Link to="/">
             <img
-              src={`${process.env.PUBLIC_URL}/images/KS-320x180-png.png`}
-              width="115"
+              src={`${process.env.PUBLIC_URL}/images/Jadoo-Broadband-Logo.png`}
+              width="130"
               height="75"
-              alt="KS Network"
+              alt="Jadoo Broadband"
             />
           </Link>
 

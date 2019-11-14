@@ -63,10 +63,7 @@ function VideoJsPlayer({ source }) {
   return (
     !requireRedraw && (
       <div data-vjs-player style={{ paddingTop: 0, height: '90.5vh' }}>
-        <video
-    ref={videoRef}
-    className="video-js vjs-big-play-centered"
-    />
+        <video ref={videoRef} className="video-js vjs-big-play-centered" />
       </div>
     )
   );

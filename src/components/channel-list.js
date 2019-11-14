@@ -13,7 +13,8 @@ function ChannelList({ channels }) {
           width: '16rem',
           height: '16.2rem',
           cursor: 'pointer',
-          border: '1px solid rgba(0, 0, 0, 0.5)'
+          border: '1px solid rgba(0, 0, 0, 0.5)',
+          marginBottom: '5px'
         }}
       >
         <img src={channel.logo} className="img-responsive" alt={channel.name} />

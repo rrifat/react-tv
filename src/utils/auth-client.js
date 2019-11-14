@@ -20,9 +20,9 @@ function getUser() {
   });
 }
 function login({ username, password }) {
-  return client('auth/login', { body: { username, password, domain:'74285c1cb4214d93a951bfaefcfa091b' } }).then(
-    handleResponse
-  );
+  return client('auth/login', {
+    body: { username, password, domain: 'af1dd86c3fb8448e87bb7770000c930c' }
+  }).then(handleResponse);
 }
 function logout() {
   window.localStorage.removeItem('__hidayah__iptv__refresh__');
