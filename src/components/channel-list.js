@@ -14,15 +14,17 @@ function ChannelList({ channels }) {
           height: '16.2rem',
           cursor: 'pointer',
           border: '1px solid rgba(0, 0, 0, 0.5)',
-          marginBottom: '5px'
+          marginBottom: '5px',
+          marginRight: '5px'
         }}
       >
-        <img src={channel.logo} className="img-responsive" alt={channel.name} />
-        <div className="card-body">
-          <p className="card-title font-weight-bold text-center">
-            {channel.name}
-          </p>
-        </div>
+        <img
+          src={channel.logo}
+          className="img-responsive"
+          alt={channel.name}
+          widht="100%"
+          height="100%"
+        />
       </div>
     </Link>
   ));

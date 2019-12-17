@@ -8,7 +8,7 @@ import { Link } from '@reach/router';
 
 const vjsComponent = videojs.getComponent('Component');
 
-function ChannelList({ player }) {
+function ChannelList() {
   const [channels, setChannels] = React.useState([]);
   React.useEffect(() => {
     channelClient.getChannels().then(({ data }) => {
@@ -53,7 +53,12 @@ function ChannelList({ player }) {
               border: '1px solid rgba(0, 0, 0, 0.5)'
             }}
           >
-            <img src={channel.logo} alt={channel.name} />
+            <img
+              src={channel.logo}
+              alt={channel.name}
+              width="200px"
+              height="200px"
+            />
           </div>
         </Link>
       ))}
@@ -63,14 +68,13 @@ function ChannelList({ player }) {
 class vjsChannelList extends vjsComponent {
   constructor(player, options) {
     super(player, options);
-    this.newPlayer = player;
     player.ready(() => this.mount());
     this.on('dispose', () => {
       unmountComponentAtNode(this.el());
     });
   }
   mount() {
-    render(<ChannelList player={this.newPlayer} />, this.el());
+    render(<ChannelList />, this.el());
   }
 }
 
