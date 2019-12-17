@@ -1,11 +1,10 @@
+import './bootstrap';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import './index.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { render } from 'react-dom';
+import App from './app';
 import AppProviders from './context';
 
-ReactDOM.render(
+render(
   <AppProviders>
     <App />
   </AppProviders>,
