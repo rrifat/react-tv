@@ -13,7 +13,7 @@ function VideoPlayer({ slug }) {
   React.useEffect(() => {
     channelClient.getChannelUrl(slug).then(({ data } = {}) => {
       setSource({
-        type: 'application/x-mpegURL',
+        type: data && data.type,
         src: data && data.url
       });
     });

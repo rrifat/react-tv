@@ -19,11 +19,15 @@ function getUser() {
     return Promise.reject(error);
   });
 }
+
 function login({ username, password }) {
-  return client('auth/login', {
-    body: { username, password, domain: 'af1dd86c3fb8448e87bb7770000c930c' }
-  }).then(handleResponse);
+  return getDomain().then(domain =>
+    client('auth/login', {
+      body: { username, password, domain }
+    }).then(handleResponse)
+  );
 }
+
 function logout() {
   window.localStorage.removeItem('__hidayah__iptv__refresh__');
   return Promise.resolve();
@@ -32,4 +36,9 @@ function getToken() {
   return window.localStorage.getItem('__hidayah__iptv__refresh__');
 }
 
+function getDomain() {
+  return fetch('domain.txt')
+    .then(response => response.text())
+    .then(data => data);
+}
 export { getUser, login, logout };

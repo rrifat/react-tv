@@ -81,7 +81,7 @@ function SignIn() {
             >
               {isPending ? (
                 <div
-                  class="spinner-border"
+                  className="spinner-border"
                   role="status"
                   style={{
                     width: '1.3rem',
@@ -90,7 +90,7 @@ function SignIn() {
                     borderRightColor: 'transparent'
                   }}
                 >
-                  <span class="sr-only">Loading...</span>
+                  <span className="sr-only">Loading...</span>
                 </div>
               ) : (
                 'Sign in'
