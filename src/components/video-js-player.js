@@ -24,31 +24,7 @@ const videoJsOptions = {
 function VideoJsPlayer({ source }) {
   const videoRef = React.useRef();
   const sourceRef = React.useRef(source);
-  // const [requireRedraw, setRequireRedraw] = React.useState(false);
 
-  // React.useEffect(() => {
-  //   const vjsOptions = {
-  //     ...videoJsOptions,
-  //     sources: [source]
-  //   };
-  //   let player;
-  //   if (!requireRedraw) {
-  //     player = videojs(videoRef.current, vjsOptions);
-  //     player.getChild('ControlBar').addChild('vjsButton', {});
-  //   }
-  //   return () => {
-  //     if (!player) {
-  //       return;
-  //     }
-  //     setRequireRedraw(true);
-  //   };
-  // }, [requireRedraw, source]);
-
-  // React.useEffect(() => {
-  //   if (requireRedraw) {
-  //     setRequireRedraw(false);
-  //   }
-  // }, [requireRedraw]);
   React.useEffect(() => {
     return () => {
       sourceRef.current = null;
