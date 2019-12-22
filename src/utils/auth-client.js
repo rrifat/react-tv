@@ -21,11 +21,11 @@ function getUser() {
 }
 
 function login({ username, password }) {
-  return getDomain().then(domain =>
-    client('auth/login', {
+  return getDomain().then(domain => {
+    return client('auth/login', {
       body: { username, password, domain }
-    }).then(handleResponse)
-  );
+    }).then(handleResponse);
+  });
 }
 
 function logout() {
@@ -37,8 +37,13 @@ function getToken() {
 }
 
 function getDomain() {
-  return fetch('domain.txt')
+  // fs.readFile('domain.txt', 'utf-8', (err, data) => {
+  //   console.log(data);
+  // });
+  // console.log(process.env.PUBLIC_URL);
+
+  return fetch(`${process.env.PUBLIC_URL}/domain.txt`)
     .then(response => response.text())
-    .then(data => data);
+    .then(text => text);
 }
 export { getUser, login, logout };

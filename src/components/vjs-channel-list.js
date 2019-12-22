@@ -47,7 +47,7 @@ function ChannelList() {
       }}
     >
       {channels.map(channel => (
-        <Link to={`/channel/${channel.slug}`} key={channel.uid}>
+        <Link to={`/channel/${channel.slug}`} key={channel.slug}>
           <div
             style={{
               border: '1px solid rgba(0, 0, 0, 0.5)'

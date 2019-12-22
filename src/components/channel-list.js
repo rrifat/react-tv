@@ -4,7 +4,7 @@ function ChannelList({ channels }) {
   return channels.map(channel => (
     <Link
       to={`/channel/${channel.slug}`}
-      key={channel.uid}
+      key={channel.slug}
       style={{ textDecoration: 'none' }}
     >
       <div

@@ -27,7 +27,7 @@ function List() {
   React.useEffect(() => {
     channelClient.getChannels().then(({ data }) => {
       const {
-        data: { channels }
+        data: { channels = [] }
       } = data;
       setChannels(channels);
       setListLoading(false);

@@ -3,7 +3,7 @@ import VideoJsPlayer from './components/video-js-player';
 import * as channelClient from './utils/channel-client';
 
 function VideoPlayer({ slug }) {
-  const [source, setSource] = React.useState();
+  const [source, setSource] = React.useState({});
 
   React.useEffect(() => {
     channelClient.getChannelUrl(slug).then(({ data } = {}) => {

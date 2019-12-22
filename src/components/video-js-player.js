@@ -23,49 +23,59 @@ const videoJsOptions = {
 
 function VideoJsPlayer({ source }) {
   const videoRef = React.useRef();
-  const [requireRedraw, setRequireRedraw] = React.useState(false);
+  const sourceRef = React.useRef(source);
+  // const [requireRedraw, setRequireRedraw] = React.useState(false);
 
-  // const currentRef = React.useRef();
   // React.useEffect(() => {
-  //   currentRef.current = true;
-  //   return () => {
-  //     currentRef.current = false;
+  //   const vjsOptions = {
+  //     ...videoJsOptions,
+  //     sources: [source]
   //   };
-  // }, []);
+  //   let player;
+  //   if (!requireRedraw) {
+  //     player = videojs(videoRef.current, vjsOptions);
+  //     player.getChild('ControlBar').addChild('vjsButton', {});
+  //   }
+  //   return () => {
+  //     if (!player) {
+  //       return;
+  //     }
+  //     setRequireRedraw(true);
+  //   };
+  // }, [requireRedraw, source]);
 
+  // React.useEffect(() => {
+  //   if (requireRedraw) {
+  //     setRequireRedraw(false);
+  //   }
+  // }, [requireRedraw]);
   React.useEffect(() => {
-    const vjsOptions = {
-      ...videoJsOptions,
-      sources: [source]
+    return () => {
+      sourceRef.current = null;
     };
+  }, []);
+  React.useEffect(() => {
     let player;
-    if (!requireRedraw) {
-      player = videojs(videoRef.current, vjsOptions);
-      player.getChild('ControlBar').addChild('vjsButton', {});
+    if (source.src) {
+      player = videojs(videoRef.current, videoJsOptions, () => {
+        player.src(source);
+        player.volume(0.2);
+      });
+      if (!player.getChild('ControlBar').getChild('vjsButton')) {
+        player.getChild('ControlBar').addChild('vjsButton', {});
+      }
     }
     return () => {
-      if (!player) {
-        return;
+      if (player && !sourceRef.current) {
+        player.dispose();
       }
-      // if (!currentRef.current) {
-      //   player.dispose();
-      // }
-      setRequireRedraw(true);
     };
-  }, [requireRedraw, source]);
-
-  React.useEffect(() => {
-    if (requireRedraw) {
-      setRequireRedraw(false);
-    }
-  }, [requireRedraw]);
+  }, [source]);
 
   return (
-    !requireRedraw && (
-      <div data-vjs-player style={{ paddingTop: 0, height: '90.5vh' }}>
-        <video ref={videoRef} className="video-js vjs-big-play-centered" />
-      </div>
-    )
+    <div data-vjs-player style={{ paddingTop: 0, height: '90.5vh' }}>
+      <video ref={videoRef} className="video-js vjs-big-play-centered" />
+    </div>
   );
 }
 
