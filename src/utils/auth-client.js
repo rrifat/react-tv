@@ -37,11 +37,6 @@ function getToken() {
 }
 
 function getDomain() {
-  // fs.readFile('domain.txt', 'utf-8', (err, data) => {
-  //   console.log(data);
-  // });
-  // console.log(process.env.PUBLIC_URL);
-
   return fetch(`${process.env.PUBLIC_URL}/domain.txt`)
     .then(response => response.text())
     .then(text => text);
