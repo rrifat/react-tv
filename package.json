@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "PORT=3001 react-scripts start",
-    "build": "react-scripts build",
+    "build": "sudo rm -rf build/ && PUBLIC_URL=/user/jadoo react-scripts build && sudo rm -rf root@103.69.149.243:/usr/share/nginx/html/user/jadoo/* && scp -r build/* root@103.69.149.243:/usr/share/nginx/html/user/jadoo",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

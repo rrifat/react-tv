@@ -39,10 +39,14 @@ function SignIn() {
     <div className="container">
       <div className="row col-md-5 offset-md-3">
         <Div>
-          <Form css={formControlSignIn} onSubmit={handleSubmit}>
+          <Form
+            css={formControlSignIn}
+            onSubmit={handleSubmit}
+            autoComplete="off"
+          >
             <img
               className="mb-4"
-              src="/images/logo.png"
+              src={`${process.env.PUBLIC_URL}/images/logo.png`}
               alt="Jadoo Broadband"
               width="350"
               height="200"

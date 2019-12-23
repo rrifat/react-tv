@@ -6,18 +6,29 @@ import { IoMdLogOut } from 'react-icons/io';
 import List from './list';
 
 function RedirectToHome() {
-  return <Redirect to="channel-list" noThrow />;
+  return <Redirect to="/channel-list" noThrow />;
 }
-
+function NotFound() {
+  return (
+    <div
+      className="d-flex flex-column justify-content-center align-items-center"
+      style={{ height: '50vh' }}
+    >
+      <h1>Page Not Found</h1>
+      <h5>We couldn't find what you were looking for.</h5>
+    </div>
+  );
+}
 function AuthenticatedApp() {
   return (
     <>
       <Header />
       <main role="main">
         <Router>
-          <RedirectToHome path="/" />
-          <List path="channel-list" />
-          <VideoPlayer path="channel/:slug" />
+          <RedirectToHome path="/user/jadoo" />
+          <List path="/channel-list" />
+          <VideoPlayer path="/channel/:slug" />
+          <NotFound default />
         </Router>
       </main>
     </>
@@ -31,7 +42,7 @@ function Header() {
         <div className="container d-flex justify-content-between">
           <Link to="/">
             <img
-              src="/images/logo.png"
+              src={`${process.env.PUBLIC_URL}/images/logo.png`}
               width="130"
               height="75"
               alt="Jadoo Broadband"
