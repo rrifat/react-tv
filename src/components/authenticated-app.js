@@ -25,7 +25,7 @@ function AuthenticatedApp() {
       <Header />
       <main role="main">
         <Router>
-          <RedirectToHome path="/user/jadoo" />
+          <RedirectToHome path="/" />
           <List path="/channel-list" />
           <VideoPlayer path="/channel/:slug" />
           <NotFound default />
