@@ -19,7 +19,45 @@ function NotFound() {
     </div>
   );
 }
+
 function AuthenticatedApp() {
+  const delay = window.localStorage.getItem(
+    '__hidayah__iptv__refresh__interval__'
+  );
+
+  const [userId, setUserId] = React.useState(null);
+  const {
+    data: { gettingFreshAuth },
+    logout
+  } = useAuth();
+
+  useInterval(() => {
+    gettingFreshAuth().then(
+      data => {
+        if (!userId) {
+          setUserId(data.userid);
+        }
+      },
+      () => logout()
+    );
+  }, delay);
+
+  // React.useEffect(() => {
+  //   let id = setInterval(() => {
+  //     gettingFreshAuth().then(
+  //       data => {
+  //         if (!userId) {
+  //           setUserId(data.userid);
+  //         }
+  //       },
+  //       () => logout()
+  //     );
+  //   }, 10000);
+  //   return () => {
+  //     clearInterval(id);
+  //   };
+  // }, [gettingFreshAuth, logout, userId]);
+
   return (
     <>
       <Header />
@@ -27,7 +65,7 @@ function AuthenticatedApp() {
         <Router>
           <RedirectToHome path="/" />
           <List path="/channel-list" />
-          <VideoPlayer path="/channel/:slug" />
+          <VideoPlayer path="/channel/:slug" userId={userId} />
           <NotFound default />
         </Router>
       </main>
@@ -66,3 +104,21 @@ function Header() {
 }
 
 export default AuthenticatedApp;
+
+function useInterval(callback, delay) {
+  const savedCallback = React.useRef();
+
+  React.useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  React.useEffect(() => {
+    function freshAuth() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      const id = setInterval(freshAuth, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}

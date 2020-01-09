@@ -1,27 +1,10 @@
 import React from 'react';
 import videojs from 'video.js';
-import '../plugins/advanced-sample';
 import './vjs-button';
 import '../plugins/vjs-info-overlay';
 import '@videojs/http-streaming';
 
-const videoJsOptions = {
-  autoplay: true,
-  preload: 'auto',
-  controls: true,
-  controlBar: {
-    pictureInPictureToggle: false
-  },
-  responsive: true,
-  fluid: true,
-  liveui: true
-  // vjsInfoOverlay: {
-  //   ispname: 'digi digital digi dalkjalkdfkladflk',
-  //   username: 'abc3809'
-  // }
-};
-
-function VideoJsPlayer({ source }) {
+function VideoJsPlayer({ source, userId }) {
   const videoRef = React.useRef();
   const sourceRef = React.useRef(source);
 
@@ -33,20 +16,22 @@ function VideoJsPlayer({ source }) {
   React.useEffect(() => {
     let player;
     if (source.src) {
-      player = videojs(videoRef.current, videoJsOptions, () => {
+      const vjsOptions = getVjsOptions();
+      player = videojs(videoRef.current, vjsOptions, () => {
         player.src(source);
         player.volume(0.2);
       });
       if (!player.getChild('ControlBar').getChild('vjsButton')) {
         player.getChild('ControlBar').addChild('vjsButton', {});
       }
+      userId && player.addChild('VjsInfoOverlay', { username: userId });
     }
     return () => {
       if (player && !sourceRef.current) {
         player.dispose();
       }
     };
-  }, [source]);
+  }, [source, userId]);
 
   return (
     <div data-vjs-player style={{ paddingTop: 0, height: '90.5vh' }}>
@@ -56,3 +41,24 @@ function VideoJsPlayer({ source }) {
 }
 
 export { VideoJsPlayer as default };
+
+function getVjsOptions() {
+  let videoJsOptions = {
+    autoplay: true,
+    preload: 'auto',
+    controls: true,
+    controlBar: {
+      pictureInPictureToggle: false
+    },
+    responsive: true,
+    fluid: true,
+    liveui: true
+  };
+  // if (userId) {
+  //   videoJsOptions = {
+  //     ...videoJsOptions,
+  //     vjsInfoOverlay: { username: userId }
+  //   };
+  // }
+  return videoJsOptions;
+}

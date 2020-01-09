@@ -7,14 +7,10 @@ const AuthContext = React.createContext();
 
 async function bootstrapData() {
   const data = await authClient.getUser();
-
   if (!data) {
     return { user: false };
   }
-  const { user } = data;
-  return {
-    user
-  };
+  return data;
 }
 
 function AuthProvider(props) {

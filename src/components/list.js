@@ -3,6 +3,7 @@ import ChannelList from './channel-list';
 import Pagination from './pagination';
 import * as channelClient from '../utils/channel-client';
 import { FullPageSpinner } from './lib';
+import { useAuth } from '../context/auth-context';
 
 function usePaginate(items, currentPage) {
   const itemsPerPage = 18;
@@ -19,20 +20,26 @@ function usePaginate(items, currentPage) {
 }
 
 function List() {
+  const { logout } = useAuth();
   const [channels, setChannels] = React.useState([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [currentPageChannels, pages] = usePaginate(channels, currentPage);
   const [listLoading, setListLoading] = React.useState(true);
 
   React.useEffect(() => {
-    channelClient.getChannels().then(({ data }) => {
-      const {
-        data: { channels = [] }
-      } = data;
-      setChannels(channels);
-      setListLoading(false);
-    });
-  }, []);
+    let mounted = true;
+    channelClient.getChannels().then(
+      ({ data }) => {
+        const {
+          data: { channels = [] }
+        } = data;
+        mounted && setChannels(channels);
+        mounted && setListLoading(false);
+      },
+      _ => logout()
+    );
+    return () => (mounted = false);
+  }, [logout]);
 
   return (
     <div className="container-fluid mt-3">

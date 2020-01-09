@@ -4,7 +4,7 @@ import videojs from 'video.js';
 
 const Component = videojs.getComponent('Component');
 
-function InfoOverlay({ options: { ispname, username } }) {
+function InfoOverlay({ options: { username } }) {
   return (
     <div
       style={{
@@ -13,16 +13,14 @@ function InfoOverlay({ options: { ispname, username } }) {
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         fontSize: '1.5em',
         position: 'absolute',
-        padding: '0.3em',
-        left: '5px',
-        top: '60px',
+        padding: '10px',
+        right: '10%',
+        top: '5%',
         boxSizing: 'border-box',
         display: 'inline-block'
       }}
     >
-      <h5 style={{ flexGrow: 1 }}>
-        {ispname} - {username}
-      </h5>
+      <h4 style={{ flexGrow: 1 }}>{username}</h4>
     </div>
   );
 }
